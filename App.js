@@ -3,7 +3,8 @@ import { WebView } from "react-native-webview";
 import { StyleSheet, Platform, BackHandler } from "react-native";
 
 export default function App() {
-  // navigate back for android
+
+  // navigate back function for when android hardwareBack pressed
   const webViewRef = React.useRef();
   const onAndroidBackpress = () => {
     if (webViewRef.current) {
@@ -13,14 +14,13 @@ export default function App() {
     return false;
   };
 
+  // there is no swipe back option for android so
+  // we handle the goBack function with hardwareBackPress
   React.useEffect(() => {
     if (Platform.OS === "android") {
       BackHandler.addEventListener("hardwareBackPress", onAndroidBackpress);
       return () => {
-        BackHandler.removeEventListener(
-          "hardwareBackPress",
-          onAndroidBackpress
-        );
+        BackHandler.removeEventListener("hardwareBackPress", onAndroidBackpress);
       };
     }
   }, []);
@@ -29,7 +29,6 @@ export default function App() {
     <WebView
       allowsBackForwardNavigationGestures
       allowsInlineMediaPlayback
-      ignoreSilentHardwareSwitch
       ref={webViewRef}
       style={styles.container}
       source={{ uri: "https://akademicim.com" }}
@@ -39,6 +38,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });
